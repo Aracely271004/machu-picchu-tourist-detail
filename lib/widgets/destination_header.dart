@@ -27,6 +27,21 @@ class DestinationHeader extends StatelessWidget {
             fit: BoxFit.cover,
             semanticLabel:
                 'Vista panorámica del santuario histórico de Machu Picchu',
+
+            // Si la imagen no puede descargarse,
+            // se muestra un fondo de respaldo.
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                color: const Color(0xFF2E5D3B),
+                alignment: Alignment.center,
+                child: const Icon(
+                  Icons.landscape_outlined,
+                  size: 80,
+                  color: Colors.white70,
+                  semanticLabel: 'Imagen de Machu Picchu no disponible',
+                ),
+              );
+            },
           ),
 
           // Degradado oscuro para mejorar la legibilidad del texto.
@@ -35,10 +50,7 @@ class DestinationHeader extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Colors.transparent,
-                  Color.fromARGB(200, 0, 0, 0),
-                ],
+                colors: [Colors.transparent, Color.fromARGB(200, 0, 0, 0)],
               ),
             ),
           ),
@@ -89,10 +101,7 @@ class DestinationHeader extends StatelessWidget {
                     SizedBox(width: 6),
                     Text(
                       'Cusco, Perú',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ],
                 ),
