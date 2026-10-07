@@ -59,20 +59,23 @@ class DestinationHeader extends StatelessWidget {
           Positioned(
             top: 24,
             right: 24,
-            child: Container(
-              width: 48,
-              height: 48,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.90),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.favorite_border,
-                semanticLabel: 'Agregar Machu Picchu a favoritos',
+            child: Semantics(
+              label: 'Agregar Machu Picchu a favoritos',
+              button: true,
+              child: Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.90),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.favorite_border,
+                  semanticLabel: 'Favorito',
+                ),
               ),
             ),
           ),
-
           // Información principal del destino.
           const Positioned(
             left: 24,

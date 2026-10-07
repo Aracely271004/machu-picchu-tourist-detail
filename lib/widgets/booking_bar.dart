@@ -56,23 +56,28 @@ class BookingBar extends StatelessWidget {
             // Expanded permite que el botón ocupe
             // todo el espacio horizontal restante.
             Expanded(
-              child: SizedBox(
-                height: 52,
-                child: ElevatedButton(
-                  // Callback vacío:
-                  // la sesión evalúa únicamente la interfaz.
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1B5E20),
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+              child: Semantics(
+                label: 'Reservar visita a Machu Picchu',
+                button: true,
+                child: SizedBox(
+                  height: 52,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1B5E20),
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                     ),
-                  ),
-                  child: const Text(
-                    'Reservar',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                    child: const Text(
+                      'Reservar',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),

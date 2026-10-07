@@ -23,42 +23,111 @@ class PracticalInfoSection extends StatelessWidget {
           ),
 
           const SizedBox(height: 24),
+            LayoutBuilder(
+            builder: (context, constraints) {
+              final bool isCompact = constraints.maxWidth < 520;
 
-          Wrap(
-            spacing: 16,
-            runSpacing: 16,
-            children: const [
-              PracticalInfoCard(
-                icon: Icons.landscape_outlined,
-                value: '2 445 m',
-                label: 'Altitud',
-              ),
-              PracticalInfoCard(
-                icon: Icons.schedule_outlined,
-                value: 'Día completo',
-                label: 'Duración',
-              ),
-              PracticalInfoCard(
-                icon: Icons.hiking_outlined,
-                value: 'Moderada',
-                label: 'Dificultad',
-              ),
-              PracticalInfoCard(
-                icon: Icons.wb_sunny_outlined,
-                value: '1 °C – 20 °C',
-                label: 'Clima',
-              ),
-              PracticalInfoCard(
-                icon: Icons.location_on_outlined,
-                value: 'Cusco',
-                label: 'Región',
-              ),
-              PracticalInfoCard(
-                icon: Icons.confirmation_number_outlined,
-                value: 'Con boleto',
-                label: 'Ingreso',
-              ),
-            ],
+              if (isCompact) {
+                return Wrap(
+                  spacing: 16,
+                  runSpacing: 16,
+                  children: const [
+                    PracticalInfoCard(
+                      icon: Icons.landscape_outlined,
+                      value: '2 445 m',
+                      label: 'Altitud',
+                    ),
+                    PracticalInfoCard(
+                      icon: Icons.schedule_outlined,
+                      value: 'Día completo',
+                      label: 'Duración',
+                    ),
+                    PracticalInfoCard(
+                      icon: Icons.hiking_outlined,
+                      value: 'Moderada',
+                      label: 'Dificultad',
+                    ),
+                    PracticalInfoCard(
+                      icon: Icons.wb_sunny_outlined,
+                      value: '1 °C – 20 °C',
+                      label: 'Clima',
+                    ),
+                    PracticalInfoCard(
+                      icon: Icons.location_on_outlined,
+                      value: 'Cusco',
+                      label: 'Región',
+                    ),
+                    PracticalInfoCard(
+                      icon: Icons.confirmation_number_outlined,
+                      value: 'Con boleto',
+                      label: 'Ingreso',
+                    ),
+                  ],
+                );
+              }
+
+              return const Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: PracticalInfoCard(
+                          icon: Icons.landscape_outlined,
+                          value: '2 445 m',
+                          label: 'Altitud',
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: PracticalInfoCard(
+                          icon: Icons.schedule_outlined,
+                          value: 'Día completo',
+                          label: 'Duración',
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: PracticalInfoCard(
+                          icon: Icons.hiking_outlined,
+                          value: 'Moderada',
+                          label: 'Dificultad',
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 12),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: PracticalInfoCard(
+                          icon: Icons.wb_sunny_outlined,
+                          value: '1 °C – 20 °C',
+                          label: 'Clima',
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: PracticalInfoCard(
+                          icon: Icons.location_on_outlined,
+                          value: 'Cusco',
+                          label: 'Región',
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: PracticalInfoCard(
+                          icon: Icons.confirmation_number_outlined,
+                          value: 'Con boleto',
+                          label: 'Ingreso',
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),
@@ -82,7 +151,9 @@ class PracticalInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 180,
+      constraints: const BoxConstraints(
+        minWidth: 150,
+      ),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,

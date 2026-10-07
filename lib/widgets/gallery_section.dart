@@ -29,55 +29,79 @@ class GallerySection extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-          GridView.count(
-            // El GridView está dentro del scroll principal,
-            // por eso no necesita su propio desplazamiento.
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
+          LayoutBuilder(
+  builder: (context, constraints) {
+    // En pantallas anchas se muestran tres imágenes por fila.
+    // En pantallas estrechas se mantienen dos.
+    final bool isWideGallery = constraints.maxWidth >= 840;
 
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 1.05,
+    return GridView.count(
+      shrinkWrap: true,
 
-            children: const [
-              GalleryItem(
-                imageUrl: 'https://images.unsplash.com/photo-1587595431973-160d0d94add1',
-                title: 'Vista panorámica',
-                semanticLabel: 'Vista panorámica del santuario de Machu Picchu',
-              ),
+      // El desplazamiento lo controla el SingleChildScrollView
+      // de la pantalla principal.
+      physics: const NeverScrollableScrollPhysics(),
 
-              GalleryItem(
-                imageUrl: 'https://images.unsplash.com/photo-1526392060635-9d6019884377',
-                title: 'Ciudad Inka',
-                semanticLabel: 'Construcciones de piedra de Machu Picchu',
-              ),
+      crossAxisCount: isWideGallery ? 3 : 2,
+      crossAxisSpacing: 12,
+      mainAxisSpacing: 12,
 
-              GalleryItem(
-                imageUrl: 'https://images.unsplash.com/photo-1526392060635-9d6019884377',
-                title: 'Arquitectura',
-                semanticLabel: 'Arquitectura y construcciones incas',
-              ),
+      // En escritorio las imágenes pueden ser ligeramente
+      // más horizontales.
+      childAspectRatio: isWideGallery ? 1.25 : 1.05,
 
-              GalleryItem(
-                imageUrl: 'https://images.unsplash.com/photo-1587595431973-160d0d94add1',
-                title: 'Montañas',
-                semanticLabel: 'Montañas que rodean Machu Picchu',
-              ),
+      children: const [
+        GalleryItem(
+          imageUrl:
+              'https://images.unsplash.com/photo-1587595431973-160d0d94add1',
+          title: 'Vista panorámica',
+          semanticLabel:
+              'Vista panorámica del santuario de Machu Picchu',
+        ),
 
-              GalleryItem(
-                imageUrl: 'https://images.unsplash.com/photo-1526392060635-9d6019884377',
-                title: 'Terrazas',
-                semanticLabel: 'Terrazas agrícolas de Machu Picchu',
-              ),
+        GalleryItem(
+          imageUrl:
+              'https://images.unsplash.com/photo-1526392060635-9d6019884377',
+          title: 'Ciudad Inka',
+          semanticLabel:
+              'Construcciones de piedra de Machu Picchu',
+        ),
 
-              GalleryItem(
-                imageUrl: 'https://images.unsplash.com/photo-1587595431973-160d0d94add1',
-                title: 'Paisaje andino',
-                semanticLabel: 'Paisaje natural alrededor de Machu Picchu',
-              ),
-            ],
-          ),
+        GalleryItem(
+          imageUrl:
+              'https://images.unsplash.com/photo-1526392060635-9d6019884377',
+          title: 'Arquitectura',
+          semanticLabel:
+              'Arquitectura y construcciones incas',
+        ),
+
+        GalleryItem(
+          imageUrl:
+              'https://images.unsplash.com/photo-1587595431973-160d0d94add1',
+          title: 'Montañas',
+          semanticLabel:
+              'Montañas que rodean Machu Picchu',
+        ),
+
+        GalleryItem(
+          imageUrl:
+              'https://images.unsplash.com/photo-1526392060635-9d6019884377',
+          title: 'Terrazas',
+          semanticLabel:
+              'Terrazas agrícolas de Machu Picchu',
+        ),
+
+        GalleryItem(
+          imageUrl:
+              'https://images.unsplash.com/photo-1587595431973-160d0d94add1',
+          title: 'Paisaje andino',
+          semanticLabel:
+              'Paisaje natural alrededor de Machu Picchu',
+        ),
+      ],
+    );
+  },
+),
         ],
       ),
     );
