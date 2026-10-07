@@ -7,6 +7,10 @@ import '../widgets/how_to_get_there_section.dart';
 import '../widgets/circuits_section.dart';
 import '../widgets/itinerary_section.dart';
 import '../widgets/included_section.dart';
+import '../widgets/activities_section.dart';
+import '../widgets/recommendations_section.dart';
+import '../widgets/gallery_section.dart';
+import '../widgets/booking_bar.dart';
 
 class TouristDetailScreen extends StatelessWidget {
   const TouristDetailScreen({super.key});
@@ -25,9 +29,13 @@ class TouristDetailScreen extends StatelessWidget {
             CircuitsSection(),
             ItinerarySection(),
             IncludedSection(),
+            ActivitiesSection(),
+            RecommendationsSection(),
+            GallerySection(),
           ],
         ),
       ),
+      bottomNavigationBar: BookingBar(),
     );
   }
 }
