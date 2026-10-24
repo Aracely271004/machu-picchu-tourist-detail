@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'data/database_helper.dart';
-import 'screens/tourist_detail_screen.dart';
+import 'screens/destinos_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,7 @@ class MachuPicchuApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const TouristDetailScreen(),
+      home: const DestinosScreen(),
     );
   }
 }
