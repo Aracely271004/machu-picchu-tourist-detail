@@ -16,6 +16,8 @@ import '../widgets/itinerary_section.dart';
 import '../widgets/practical_info_section.dart';
 import '../widgets/recommendations_section.dart';
 
+import '../widgets/resenas_section.dart';
+
 class TouristDetailScreen extends StatelessWidget {
   final Destino destino;
 
@@ -186,6 +188,8 @@ class TouristDetailScreen extends StatelessWidget {
                     const IncludedSection(),
                     const ActivitiesSection(),
                     const RecommendationsSection(),
+                    if (destino.id != null)
+                      ResenasSection(destinoId: destino.id!),
                     const GallerySection(),
                   ],
                 ),

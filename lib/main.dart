@@ -9,6 +9,9 @@ import 'utils/route_args.dart';
 import 'screens/destino_form_screen.dart';
 import 'models/destino.dart';
 
+import 'models/resena.dart';
+import 'screens/resena_form_screen.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -61,6 +64,20 @@ class MachuPicchuApp extends StatelessWidget {
 
             return MaterialPageRoute<Destino>(
               builder: (_) => DestinoFormScreen(destino: formArgs.destino),
+              settings: settings,
+            );
+
+          case AppRoutes.resenaFormulario:
+            final args = settings.arguments;
+
+            if (args is! ResenaFormArgs) {
+              return MaterialPageRoute(
+                builder: (_) => const _RutaInvalidaScreen(),
+              );
+            }
+
+            return MaterialPageRoute<Resena>(
+              builder: (_) => ResenaFormScreen(destinoId: args.destinoId),
               settings: settings,
             );
 
