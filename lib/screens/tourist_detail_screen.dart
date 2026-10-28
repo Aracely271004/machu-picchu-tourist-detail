@@ -18,6 +18,8 @@ import '../widgets/recommendations_section.dart';
 
 import '../widgets/resenas_section.dart';
 
+import '../widgets/distancia_section.dart';
+
 class TouristDetailScreen extends StatelessWidget {
   final Destino destino;
 
@@ -182,6 +184,7 @@ class TouristDetailScreen extends StatelessWidget {
                       const AboutSection(),
                     ],
 
+                    DistanciaSection(destino: destino),
                     const HowToGetThereSection(),
                     const CircuitsSection(),
                     const ItinerarySection(),
