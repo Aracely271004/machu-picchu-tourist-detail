@@ -1,15 +1,83 @@
 import 'package:flutter/material.dart';
 
 import '../models/destino.dart';
+import '../services/favoritos_service.dart';
 
-class DestinationHeader extends StatelessWidget {
+class DestinationHeader extends StatefulWidget {
   final Destino destino;
 
   const DestinationHeader({super.key, required this.destino});
 
   @override
+  State<DestinationHeader> createState() => _DestinationHeaderState();
+}
+
+class _DestinationHeaderState extends State<DestinationHeader> {
+  final FavoritosService _favoritosService = FavoritosService();
+
+  bool _esFavorito = false;
+  bool _cargandoFavorito = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _cargarFavorito();
+  }
+
+  Future<void> _cargarFavorito() async {
+    final id = widget.destino.id;
+
+    if (id == null) {
+      setState(() {
+        _cargandoFavorito = false;
+      });
+      return;
+    }
+
+    final esFavorito = await _favoritosService.esFavorito(id);
+
+    if (!mounted) return;
+
+    setState(() {
+      _esFavorito = esFavorito;
+      _cargandoFavorito = false;
+    });
+  }
+
+  Future<void> _alternarFavorito() async {
+    final id = widget.destino.id;
+
+    if (id == null || _cargandoFavorito) {
+      return;
+    }
+
+    setState(() {
+      _cargandoFavorito = true;
+    });
+
+    final esFavorito = await _favoritosService.alternar(id);
+
+    if (!mounted) return;
+
+    setState(() {
+      _esFavorito = esFavorito;
+      _cargandoFavorito = false;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          esFavorito
+              ? '${widget.destino.nombre} agregado a favoritos.'
+              : '${widget.destino.nombre} eliminado de favoritos.',
+        ),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final rutaImagen = destino.rutaImagen;
+    final rutaImagen = widget.destino.rutaImagen;
 
     return SizedBox(
       height: 420,
@@ -21,8 +89,8 @@ class DestinationHeader extends StatelessWidget {
             Image.network(
               rutaImagen,
               fit: BoxFit.cover,
-              semanticLabel: 'Imagen de ${destino.nombre}',
-              errorBuilder: (_, _, _) {
+              semanticLabel: 'Imagen de ${widget.destino.nombre}',
+              errorBuilder: (context, error, stackTrace) {
                 return _imagenRespaldo();
               },
             )
@@ -43,7 +111,9 @@ class DestinationHeader extends StatelessWidget {
             top: 24,
             right: 24,
             child: Semantics(
-              label: 'Agregar ${destino.nombre} a favoritos',
+              label: _esFavorito
+                  ? 'Quitar ${widget.destino.nombre} de favoritos'
+                  : 'Agregar ${widget.destino.nombre} a favoritos',
               button: true,
               child: Container(
                 width: 48,
@@ -52,9 +122,15 @@ class DestinationHeader extends StatelessWidget {
                   color: Colors.white.withValues(alpha: 0.90),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
-                  Icons.favorite_border,
-                  semanticLabel: 'Favorito',
+                child: IconButton(
+                  onPressed: _cargandoFavorito ? null : _alternarFavorito,
+                  icon: Icon(
+                    _esFavorito ? Icons.favorite : Icons.favorite_border,
+                    color: _esFavorito ? Colors.red : Colors.black87,
+                  ),
+                  tooltip: _esFavorito
+                      ? 'Quitar de favoritos'
+                      : 'Agregar a favoritos',
                 ),
               ),
             ),
@@ -68,7 +144,7 @@ class DestinationHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  destino.nombre,
+                  widget.destino.nombre,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 36,
@@ -85,7 +161,7 @@ class DestinationHeader extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      destino.categoria,
+                      widget.destino.categoria,
                       style: const TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ],

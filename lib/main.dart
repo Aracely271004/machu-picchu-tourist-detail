@@ -12,6 +12,8 @@ import 'models/destino.dart';
 import 'models/resena.dart';
 import 'screens/resena_form_screen.dart';
 
+import 'screens/favoritos_screen.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -78,6 +80,12 @@ class MachuPicchuApp extends StatelessWidget {
 
             return MaterialPageRoute<Resena>(
               builder: (_) => ResenaFormScreen(destinoId: args.destinoId),
+              settings: settings,
+            );
+
+          case AppRoutes.favoritos:
+            return MaterialPageRoute(
+              builder: (_) => const FavoritosScreen(),
               settings: settings,
             );
 
