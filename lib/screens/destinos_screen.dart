@@ -87,6 +87,15 @@ class _DestinosScreenState extends State<DestinosScreen> {
           'Destinos turísticos',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        actions: [
+          IconButton(
+            tooltip: 'Favoritos',
+            icon: const Icon(Icons.favorite_outline),
+            onPressed: () async {
+              await Navigator.pushNamed(context, AppRoutes.favoritos);
+            },
+          ),
+        ],
         backgroundColor: const Color(0xFFFFF8FF),
         surfaceTintColor: Colors.transparent,
       ),

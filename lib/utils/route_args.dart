@@ -11,3 +11,9 @@ class DestinoFormArgs {
 
   const DestinoFormArgs({this.destino});
 }
+
+class ResenaFormArgs {
+  final int destinoId;
+
+  const ResenaFormArgs({required this.destinoId});
+}
