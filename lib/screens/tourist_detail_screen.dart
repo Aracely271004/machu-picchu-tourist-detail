@@ -11,9 +11,12 @@ import '../widgets/activities_section.dart';
 import '../widgets/recommendations_section.dart';
 import '../widgets/gallery_section.dart';
 import '../widgets/booking_bar.dart';
+import '../models/destino.dart';
 
 class TouristDetailScreen extends StatelessWidget {
-  const TouristDetailScreen({super.key});
+  final Destino destino;
+
+  const TouristDetailScreen({super.key, required this.destino});
 
   @override
   Widget build(BuildContext context) {
@@ -38,26 +41,23 @@ class TouristDetailScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const DestinationHeader(),
+                    DestinationHeader(destino: destino),
 
                     // En pantallas grandes las dos secciones
                     // se presentan una al lado de la otra.
                     if (isWideScreen)
-                      const Row(
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: PracticalInfoSection(),
+                            child: PracticalInfoSection(destino: destino),
                           ),
-                          Expanded(
-                            child: AboutSection(),
-                          ),
+                          Expanded(child: AboutSection()),
                         ],
                       )
-                    else ...const [
-                      // En móvil/tableta se mantienen una debajo de otra.
-                      PracticalInfoSection(),
-                      AboutSection(),
+                    else ...[
+                      PracticalInfoSection(destino: destino),
+                      const AboutSection(),
                     ],
 
                     const HowToGetThereSection(),

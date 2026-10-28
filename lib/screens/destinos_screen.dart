@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/app_routes.dart';
+import '../utils/route_args.dart';
 import '../data/destino_repository.dart';
 import '../models/destino.dart';
 
@@ -89,7 +91,10 @@ class _DestinosScreenState extends State<DestinosScreen> {
                     return _EstadoVacio(categoria: _categoriaSeleccionada);
                   }
 
-                  return _ListaDestinos(destinos: destinos);
+                  return _ListaDestinos(
+                    destinos: destinos,
+                    onActualizar: _recargar,
+                  );
                 },
               ),
             ),
@@ -123,8 +128,9 @@ class _DestinosScreenState extends State<DestinosScreen> {
 
 class _ListaDestinos extends StatelessWidget {
   final List<Destino> destinos;
+  final VoidCallback onActualizar;
 
-  const _ListaDestinos({required this.destinos});
+  const _ListaDestinos({required this.destinos, required this.onActualizar});
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +139,10 @@ class _ListaDestinos extends StatelessWidget {
       itemCount: destinos.length,
       separatorBuilder: (_, _) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
-        return _DestinoCard(destino: destinos[index]);
+        return _DestinoCard(
+          destino: destinos[index],
+          onActualizar: onActualizar,
+        );
       },
     );
   }
@@ -141,8 +150,9 @@ class _ListaDestinos extends StatelessWidget {
 
 class _DestinoCard extends StatelessWidget {
   final Destino destino;
+  final VoidCallback onActualizar;
 
-  const _DestinoCard({required this.destino});
+  const _DestinoCard({required this.destino, required this.onActualizar});
 
   @override
   Widget build(BuildContext context) {
@@ -150,59 +160,72 @@ class _DestinoCard extends StatelessWidget {
       margin: EdgeInsets.zero,
       elevation: 2,
       clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            height: 190,
-            child: _ImagenDestino(destino: destino),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  destino.nombre,
-                  style: Theme.of(context).textTheme.titleLarge
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  destino.categoria,
-                  style: const TextStyle(
-                    color: Color(0xFF1B6B2A),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 16,
-                  runSpacing: 10,
-                  children: [
-                    _DatoDestino(
-                      icono: Icons.terrain,
-                      texto: '${destino.altitudMsnm} m',
-                    ),
-                    _DatoDestino(
-                      icono: Icons.directions_walk,
-                      texto: destino.dificultad,
-                    ),
-                    _DatoDestino(
-                      icono: Icons.schedule,
-                      texto: '${destino.duracionH.toStringAsFixed(0)} h',
-                    ),
-                    _DatoDestino(
-                      icono: Icons.payments_outlined,
-                      texto: 'S/ ${destino.precio.toStringAsFixed(0)}',
-                    ),
-                  ],
-                ),
-              ],
+      child: InkWell(
+        onTap: () async {
+          final cambios = await Navigator.pushNamed<bool>(
+            context,
+            AppRoutes.destinoDetalle,
+            arguments: DestinoDetalleArgs(destino: destino),
+          );
+
+          if (cambios == true) {
+            onActualizar();
+          }
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: 190,
+              child: _ImagenDestino(destino: destino),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    destino.nombre,
+                    style: Theme.of(context).textTheme.titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    destino.categoria,
+                    style: const TextStyle(
+                      color: Color(0xFF1B6B2A),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 16,
+                    runSpacing: 10,
+                    children: [
+                      _DatoDestino(
+                        icono: Icons.terrain,
+                        texto: '${destino.altitudMsnm} m',
+                      ),
+                      _DatoDestino(
+                        icono: Icons.directions_walk,
+                        texto: destino.dificultad,
+                      ),
+                      _DatoDestino(
+                        icono: Icons.schedule,
+                        texto: '${destino.duracionH.toStringAsFixed(0)} h',
+                      ),
+                      _DatoDestino(
+                        icono: Icons.payments_outlined,
+                        texto: 'S/ ${destino.precio.toStringAsFixed(0)}',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,50 +1,34 @@
 import 'package:flutter/material.dart';
 
-/// Encabezado principal de la pantalla turística.
-///
-/// Utiliza un Stack para superponer:
-/// - Imagen de portada.
-/// - Degradado oscuro.
-/// - Información textual.
-/// - Botón visual de favorito.
-///
-/// La interfaz es completamente estática.
+import '../models/destino.dart';
+
 class DestinationHeader extends StatelessWidget {
-  const DestinationHeader({super.key});
+  final Destino destino;
+
+  const DestinationHeader({super.key, required this.destino});
 
   @override
   Widget build(BuildContext context) {
+    final rutaImagen = destino.rutaImagen;
+
     return SizedBox(
       height: 420,
       width: double.infinity,
       child: Stack(
         fit: StackFit.expand,
-        clipBehavior: Clip.none,
         children: [
-          // Imagen principal del destino turístico.
-          Image.network(
-            'https://images.unsplash.com/photo-1587595431973-160d0d94add1',
-            fit: BoxFit.cover,
-            semanticLabel:
-                'Vista panorámica del santuario histórico de Machu Picchu',
+          if (rutaImagen != null && rutaImagen.isNotEmpty)
+            Image.network(
+              rutaImagen,
+              fit: BoxFit.cover,
+              semanticLabel: 'Imagen de ${destino.nombre}',
+              errorBuilder: (_, _, _) {
+                return _imagenRespaldo();
+              },
+            )
+          else
+            _imagenRespaldo(),
 
-            // Si la imagen no puede descargarse,
-            // se muestra un fondo de respaldo.
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                color: const Color(0xFF2E5D3B),
-                alignment: Alignment.center,
-                child: const Icon(
-                  Icons.landscape_outlined,
-                  size: 80,
-                  color: Colors.white70,
-                  semanticLabel: 'Imagen de Machu Picchu no disponible',
-                ),
-              );
-            },
-          ),
-
-          // Degradado oscuro para mejorar la legibilidad del texto.
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -55,12 +39,11 @@ class DestinationHeader extends StatelessWidget {
             ),
           ),
 
-          // Botón visual de favorito.
           Positioned(
             top: 24,
             right: 24,
             child: Semantics(
-              label: 'Agregar Machu Picchu a favoritos',
+              label: 'Agregar ${destino.nombre} a favoritos',
               button: true,
               child: Container(
                 width: 48,
@@ -76,8 +59,8 @@ class DestinationHeader extends StatelessWidget {
               ),
             ),
           ),
-          // Información principal del destino.
-          const Positioned(
+
+          Positioned(
             left: 24,
             right: 24,
             bottom: 28,
@@ -85,26 +68,25 @@ class DestinationHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Machu Picchu',
-                  style: TextStyle(
+                  destino.nombre,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Row(
                   children: [
-                    Icon(
-                      Icons.location_on_outlined,
+                    const Icon(
+                      Icons.category_outlined,
                       color: Colors.white,
                       size: 20,
-                      semanticLabel: 'Ubicación',
                     ),
-                    SizedBox(width: 6),
+                    const SizedBox(width: 6),
                     Text(
-                      'Cusco, Perú',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      destino.categoria,
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ],
                 ),
@@ -112,6 +94,18 @@ class DestinationHeader extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _imagenRespaldo() {
+    return Container(
+      color: const Color(0xFF2E5D3B),
+      alignment: Alignment.center,
+      child: const Icon(
+        Icons.landscape_outlined,
+        size: 80,
+        color: Colors.white70,
       ),
     );
   }

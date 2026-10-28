@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../models/destino.dart';
+
 /// Sección que presenta información práctica del destino.
 ///
 /// Se utiliza Wrap para permitir que las tarjetas se reorganicen
 /// automáticamente cuando cambia el ancho disponible.
 class PracticalInfoSection extends StatelessWidget {
-  const PracticalInfoSection({super.key});
+  final Destino destino;
+
+  const PracticalInfoSection({super.key, required this.destino});
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +20,11 @@ class PracticalInfoSection extends StatelessWidget {
         children: [
           const Text(
             'Información práctica',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 24),
-            LayoutBuilder(
+          LayoutBuilder(
             builder: (context, constraints) {
               final bool isCompact = constraints.maxWidth < 520;
 
@@ -31,20 +32,20 @@ class PracticalInfoSection extends StatelessWidget {
                 return Wrap(
                   spacing: 16,
                   runSpacing: 16,
-                  children: const [
+                  children: [
                     PracticalInfoCard(
                       icon: Icons.landscape_outlined,
-                      value: '2 445 m',
+                      value: '${destino.altitudMsnm} m',
                       label: 'Altitud',
                     ),
                     PracticalInfoCard(
                       icon: Icons.schedule_outlined,
-                      value: 'Día completo',
+                      value: '${destino.duracionH.toStringAsFixed(0)} h',
                       label: 'Duración',
                     ),
                     PracticalInfoCard(
                       icon: Icons.hiking_outlined,
-                      value: 'Moderada',
+                      value: destino.dificultad,
                       label: 'Dificultad',
                     ),
                     PracticalInfoCard(
@@ -66,14 +67,14 @@ class PracticalInfoSection extends StatelessWidget {
                 );
               }
 
-              return const Column(
+              return Column(
                 children: [
                   Row(
                     children: [
                       Expanded(
                         child: PracticalInfoCard(
                           icon: Icons.landscape_outlined,
-                          value: '2 445 m',
+                          value: '${destino.altitudMsnm} m',
                           label: 'Altitud',
                         ),
                       ),
@@ -81,7 +82,7 @@ class PracticalInfoSection extends StatelessWidget {
                       Expanded(
                         child: PracticalInfoCard(
                           icon: Icons.schedule_outlined,
-                          value: 'Día completo',
+                          value: '${destino.duracionH.toStringAsFixed(0)} h',
                           label: 'Duración',
                         ),
                       ),
@@ -89,7 +90,7 @@ class PracticalInfoSection extends StatelessWidget {
                       Expanded(
                         child: PracticalInfoCard(
                           icon: Icons.hiking_outlined,
-                          value: 'Moderada',
+                          value: destino.dificultad,
                           label: 'Dificultad',
                         ),
                       ),
@@ -151,9 +152,7 @@ class PracticalInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(
-        minWidth: 150,
-      ),
+      constraints: const BoxConstraints(minWidth: 150),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -168,28 +167,18 @@ class PracticalInfoCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(
-            icon,
-            size: 30,
-            color: const Color(0xFF1B5E20),
-          ),
+          Icon(icon, size: 30, color: const Color(0xFF1B5E20)),
           const SizedBox(height: 10),
           Text(
             value,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 4),
           Text(
             label,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.black54,
-            ),
+            style: const TextStyle(fontSize: 14, color: Colors.black54),
           ),
         ],
       ),
