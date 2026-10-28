@@ -33,6 +33,30 @@ class _DestinosScreenState extends State<DestinosScreen> {
     _cargarDestinos();
   }
 
+  Future<void> _crearDestino() async {
+    final destinoCreado = await Navigator.pushNamed<Destino>(
+      context,
+      AppRoutes.destinoFormulario,
+      arguments: const DestinoFormArgs(),
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    if (destinoCreado != null) {
+      _recargar();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Destino "${destinoCreado.nombre}" registrado correctamente.',
+          ),
+        ),
+      );
+    }
+  }
+
   void _cargarDestinos() {
     _futuroDestinos = _repository.listar(
       categoria: _categoriaSeleccionada == 'Todos'
@@ -100,6 +124,11 @@ class _DestinosScreenState extends State<DestinosScreen> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _crearDestino,
+        icon: const Icon(Icons.add),
+        label: const Text('Nuevo'),
       ),
     );
   }
