@@ -5,3 +5,9 @@ class DestinoDetalleArgs {
 
   const DestinoDetalleArgs({required this.destino});
 }
+
+class DestinoFormArgs {
+  final Destino? destino;
+
+  const DestinoFormArgs({this.destino});
+}

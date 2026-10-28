@@ -6,6 +6,9 @@ import 'screens/tourist_detail_screen.dart';
 import 'utils/app_routes.dart';
 import 'utils/route_args.dart';
 
+import 'screens/destino_form_screen.dart';
+import 'models/destino.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -41,6 +44,23 @@ class MachuPicchuApp extends StatelessWidget {
 
             return MaterialPageRoute<bool>(
               builder: (_) => TouristDetailScreen(destino: args.destino),
+              settings: settings,
+            );
+
+          case AppRoutes.destinoFormulario:
+            final args = settings.arguments;
+
+            if (args != null && args is! DestinoFormArgs) {
+              return MaterialPageRoute(
+                builder: (_) => const _RutaInvalidaScreen(),
+              );
+            }
+
+            final formArgs =
+                args as DestinoFormArgs? ?? const DestinoFormArgs();
+
+            return MaterialPageRoute<Destino>(
+              builder: (_) => DestinoFormScreen(destino: formArgs.destino),
               settings: settings,
             );
 
